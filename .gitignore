@@ -128,6 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-data/filters
-data/fashion
+#data/filters
+#data/fashion
 .idea/
