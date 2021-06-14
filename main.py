@@ -6,10 +6,10 @@ from tqdm import tqdm
 import knn
 
 
-def filters_generator():
+def filters_generator(data_type):
     start_path = './data/fashion/'
-    end_path = './data/filters/train/'
-    multiprocess_starter(gabor(load_mnist(start_path, 'train')[0], 'train'), end_path, 8)
+    end_path = f'./data/filters/{data_type}/'
+    multiprocess_starter(gabor(load_mnist(start_path, data_type)[0], data_type), end_path, 8)
 
 
 def knn_model(index, k):
