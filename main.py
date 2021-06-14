@@ -1,8 +1,8 @@
-import time
-from utils import *
 from save_data import multiprocess_starter
 from filters import *
 from tqdm import tqdm
+from neural_networks import *
+from utils import *
 import knn
 
 
@@ -19,14 +19,36 @@ def knn_model(index, k):
     return knn.score(model, x_test, y_test)
 
 
-def all_knn_models(start, end, k_array):
+def all_knn_models(start, end, k):
     scores = []
-    i = start
-    for i in tqdm(range(end)):
-        for k in k_array:
-            scores.append((knn_model(start, k), i, k))
+    for i in tqdm(range(start, end)):
+        scores.append((knn_model(i, k), i))
     return scores
 
 
+def all_k_values(i, k_values):
+    scores = []
+    for k in k_values:
+        scores.append((knn_model(i, k), k))
+    return scores
+
+
+def all_filters_test():
+    best_filters = all_knn_models(1, 384, 5)
+    best_filters.sort(reverse=True)
+    print("BEST FILTERS")
+    for model in best_filters:
+        print(model)
+    best_k = all_k_values(best_filters[0][1], [1, 3, 5, 10, 15, 20, 30, 50, 100, 200, 500, 1000])
+    best_k.sort(reverse=True)
+    print("BEST K-VALUES")
+    for model in best_k:
+        print(model)
+
+
 if __name__ == '__main__':
-    print(all_knn_models(1, 3, [3, 5]))
+    # train_conv(conv_neural_network_1(), optimizer=tf.keras.optimizers.Adam(learning_rate=0.001, epsilon=1e-08, decay=0.0),
+    #            salt_and_pepper=True)
+    # optimizer = tf.keras.optimizers.Adam(learning_rate=0.001, epsilon=1e-08)
+    # optimizer=tf.keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9, epsilon=1e-08)
+    pass
